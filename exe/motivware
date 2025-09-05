@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require "motivware"
+
+file = ARGV[0]
+
+unless file
+  puts "Usage: motivware path/to/test_file.rb"
+  exit 1
+end
+
+Motivware.run(file)
