@@ -1,43 +1,140 @@
 # Motivware
 
-TODO: Delete this and the text below, and describe your gem
+**Rails-native system testing for modern apps — written entirely in Ruby.**
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/motivware`. To experiment with that code, run `bin/console` for an interactive prompt.
+---
+
+## Background
+
+Rails system tests are great, but modern test automation frameworks like **Playwright** and **Cypress** haven’t fully served the Rails ecosystem:
+
+* **Cypress** only works with TypeScript/JavaScript.
+* **Playwright** doesn’t offer a way to write tests in Ruby.
+
+Some Rails developers have built gems or utilities around these frameworks, but there hasn’t been a truly **Rails-native, Ruby-first automation testing framework**.
+
+**Motivware** fills this gap — a lightweight system testing tool built for Rails, written entirely in Ruby. You can write full-featured system tests using a **simple DSL**, get Turbo-aware waits, automatic screenshots on failure, and run everything with pure Ruby.
+
+---
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this to your Rails app `Gemfile` (PoC local install):
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem "motivware", path: "../motivware"
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Then run:
 
 ```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+bundle install
 ```
 
-## Usage
+Or, after building the gem:
 
-TODO: Write usage instructions here
+```bash
+gem build motivware.gemspec
+gem install ./motivware-0.1.0.gem
+```
 
-## Development
+---
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## CLI Usage
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```bash
+motivware path/to/test_file.rb
+```
+
+Example:
+
+```bash
+motivware test/system/login_test.rb
+```
+
+---
+
+## Example Test File
+
+Create `test/system/login_test.rb`:
+
+```ruby
+require "motivware"
+
+Motivware.test "dummy test" do
+  puts "✅ Rails app loaded successfully"
+end
+```
+
+Run it:
+
+```bash
+ruby ../motivware/exe/motivware test/system/login_test.rb
+```
+
+Expected output:
+
+```
+Loading test file: test/system/login_test.rb
+▶️ Running: dummy test
+✅ Rails app loaded successfully
+✅ dummy test passed
+```
+
+---
+
+## Features (v0.1 PoC)
+
+* Rails-native, Ruby-first DSL
+* CLI runner for test files
+* Minimal setup — no Node.js required
+* Turbo/Hotwire-aware waits (future improvement)
+* Screenshots on test failure
+
+---
+
+## Next Steps
+
+* Add real Rails page tests (forms, logins, dashboards)
+* Implement more DSL helpers (`within`, `assert_selector`, etc.)
+* Turbo/Hotwire wait improvements
+* Automatic database cleanup between tests
+
+---
+
+## Why Motivware?
+
+Motivware was created because Rails developers need **a modern test automation framework that feels native to Rails**. Unlike Cypress or Playwright:
+
+* You can write tests **entirely in Ruby**.
+* You don’t need TypeScript, JavaScript, or Node.js.
+* It integrates naturally with Rails features like Turbo/Hotwire and ActiveRecord.
+
+Motivware gives Rails developers **the power of modern test automation** without leaving the Rails ecosystem.
+
+---
+
+## Development Notes
+
+* The gem is currently PoC (v0.1.0).
+* CLI runs a test file via:
+
+```ruby
+Motivware.run(file_path)
+```
+
+* The DSL method `Motivware.test` is top-level in the test file.
+* Screenshots on failure are saved in `tmp/motivware/` by default.
+* Test files must `require "motivware"` at the top.
+
+---
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/motivware. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/motivware/blob/development/CODE_OF_CONDUCT.md).
+This is an early PoC. Pull requests, feedback, and ideas are welcome!
+
+---
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Motivware project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/motivware/blob/development/CODE_OF_CONDUCT.md).
+MIT License
