@@ -134,11 +134,16 @@ Motivware gives Rails developers **the power of modern test automation** without
 * The gem is currently PoC (v0.1.0).
 * CLI runs a test file via:
 
-```motivware file_path
+```
+motivware file_path
 ```
 
 * Screenshots on failure are saved in `tmp/motivware/` by default.
-* Test files must `require "motivware"` at the top.
+* Test files must must include this at the top:
+
+```
+require_relative "../../../motivware/lib/motivware/system_test"
+```
 
 ---
 
