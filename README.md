@@ -72,13 +72,31 @@ motivware test/system/login_test.rb
 
 ## Example Test File
 
-Create `test/system/login_test.rb`:
+Create `test/system/user_signup_test.rb`:
 
 ```ruby
-require "motivware"
+require File.expand_path("../test_helper", __dir__)
+require_relative "../../../motivware/lib/motivware/system_test"
 
-Motivware.test "dummy test" do
-  puts "✅ Rails app loaded successfully"
+class UserSignupDemoTest < Motivware::SystemTest
+  test "user signup demo showcasing all features" do
+    run_with_artifacts("User signup demo", snapshot_models: [User]) do
+      # Visit signup page
+      visit "/users/new"
+
+      # Fill in fields using type (label-based)
+      type "Name", "Alice"
+
+      # Fill in model-based fields
+      fill_in_model User, :email, "alice@example.com"
+
+      # Click button using clean DSL
+      click "Create User"
+
+      # Expect page content
+      expect_text "Welcome Alice."
+    end
+  end
 end
 ```
 
