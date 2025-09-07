@@ -17,6 +17,22 @@ Some Rails developers have built gems or utilities around these frameworks, but 
 
 ---
 
+## Features
+
+* Rails-native DSL helpers:
+
+  * `type "Label", "Value"` → type text into a field by label
+  * `fill_in_model User, :email, "user@example.com"` → fill model-backed field
+  * `click "Button Label"` → click button or link
+  * `expect_text "Text on page"` → assert page contains text
+* Automatic **screenshots** on failure
+* Automatic **HTML dump** of page state on failure
+* Automatic **DB snapshot** for inspected models
+* CLI runner for test files
+* Minimal setup — no Node.js required
+
+---
+
 ## Installation
 
 Add this to your Rails app `Gemfile` (PoC local install):
@@ -95,7 +111,6 @@ Loading test file: test/system/login_test.rb
 
 ## Next Steps
 
-* Add real Rails page tests (forms, logins, dashboards)
 * Implement more DSL helpers (`within`, `assert_selector`, etc.)
 * Turbo/Hotwire wait improvements
 * Automatic database cleanup between tests
@@ -119,11 +134,9 @@ Motivware gives Rails developers **the power of modern test automation** without
 * The gem is currently PoC (v0.1.0).
 * CLI runs a test file via:
 
-```ruby
-Motivware.run(file_path)
+```motivware file_path
 ```
 
-* The DSL method `Motivware.test` is top-level in the test file.
 * Screenshots on failure are saved in `tmp/motivware/` by default.
 * Test files must `require "motivware"` at the top.
 
